@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Residential Aged Care Map</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #vis { width: 100%; max-width: 900px; margin: auto; }
+  </style>
+</head>
+<body>
+  <h1>Residential Aged Care Supply — Australia</h1>
+  <div id="vis"></div>
+
+  <script>
+    const spec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 860,
+      "height": 560,
+      "projection": {
+        "type": "conicConformal"
+      },
+      "data": {
+        "url": "geo/au_states.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "STE_2021_AUST_GDA2020"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.STE_NAME21",
+          "from": {
+            "data": { "url": "data/state_totals.csv" },
+            "key": "state",
+            "fields": ["total_places"]
+          }
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "color": {
+          "field": "total_places",
+          "type": "quantitative",
+          "title": "Residential places",
+          "scale": { "scheme": "blues" }
+        },
+        "tooltip": [
+          { "field": "properties.STE_NAME21", "title": "State / Territory" },
+          { "field": "total_places", "type": "quantitative", "title": "Residential places" }
+        ]
+      },
+      "config": {
+        "view": {
+          "stroke": null
+        }
+      }
+    };
+
+    vegaEmbed('#vis', spec, {actions: false}).catch(console.error);
+  </script>
+</body>
+</html>
