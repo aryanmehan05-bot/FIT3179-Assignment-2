@@ -1,57 +1,31 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8" />
-  <title>Residential Aged Care Map</title>
+  <title>Residential Aged Care — Share of National Places by State 2024</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    #vis {
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #vis { width: 100%; max-width: 900px; margin: auto; }
   </style>
 </head>
-
 <body>
-  <h1>Residential Aged Care Supply — Australia</h1>
+  <h1>Residential Aged Care — Share of National Places by State 2024</h1>
   <div id="vis"></div>
+
   <script>
     const spec = {
       "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
       "width": 860,
       "height": 560,
-      "projection": {
-        "type": "mercator",
-        "reflectY": true
-      },
+      "projection": { "type": "mercator", "center": [134, -28], "scale": 800 },
       "layer": [
         {
           "data": {
-            "url": "geo/ne_10m_graticules_30.geojson"
-          },
-          "mark": {
-            "type": "geoshape",
-            "stroke": "#888",
-            "strokeWidth": 0.5,
-            "fill": "none"
-          }
-        },
-        {
-          "data": {
             "url": "geo/au_states.topojson",
-            "format": {
-              "type": "topojson",
-              "feature": "STE_2021_AUST_GDA2020"
-            }
+            "format": { "type": "topojson", "feature": "STE_2021_AUST_GDA2020" }
           },
           "transform": [
             {
@@ -61,36 +35,41 @@
                 "key": "state",
                 "fields": ["total_places"]
               }
+            },
+            {
+              "joinaggregate": [
+                { "op": "sum", "field": "total_places", "as": "national_total_places" }
+              ]
+            },
+            {
+              "calculate": "datum.total_places && datum.national_total_places > 0 ? (100 * datum.total_places / datum.national_total_places) : 0",
+              "as": "share_pct"
             }
           ],
-          "mark": {
-            "type": "geoshape",
-            "stroke": "white",
-            "strokeWidth": 0.5
-          },
+          "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 0.5 },
           "encoding": {
             "color": {
-              "field": "total_places",
+              "field": "share_pct",
               "type": "quantitative",
-              "title": "Residential places",
-              "scale": { "scheme": "blues" }
+              "title": "% of national places",
+              "scale": { "scheme": "blues", "domain": [0, 50] }
             },
             "tooltip": [
               { "field": "properties.STE_NAME21", "title": "State / Territory" },
-              { "field": "total_places", "type": "quantitative", "title": "Residential places" }
+              { "field": "total_places", "title": "Total places", "format": "," },
+              { "field": "share_pct", "title": "Share of national (%)", "format": ".3f" }
             ]
           }
+        },
+        {
+          "data": { "url": "geo/ne_10m_graticules_30.geojson" },
+          "mark": { "type": "geoshape", "stroke": "#999", "strokeWidth": 0.5, "fill": "none" }
         }
       ],
-      "config": {
-        "view": {
-          "stroke": null
-        }
-      }
+      "config": { "view": { "stroke": null } }
     };
 
-    vegaEmbed('#vis', spec, { actions: false }).catch(console.error);
+    vegaEmbed('#vis', spec, { actions: false }).catch(err => console.error('Vega Embed Error:', err));
   </script>
 </body>
-
 </html>
