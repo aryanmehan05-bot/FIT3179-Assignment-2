@@ -4,71 +4,76 @@
   <meta charset="utf-8" />
   <title>Carers in Australia (ABS 2022) — % by Age & Sex</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
-    h1 { font-size: 20px; margin-bottom: 8px; }
-    p  { color: #444; margin-top: 0; }
-    #pyramid { width: 100%; max-width: 960px; margin: 16px 0 8px; }
-    /* Optional: move 3-dots menu below chart so it doesn't overlap legends */
     .vega-actions { position: relative !important; top: 8px !important; text-align: left; }
+    #pyramid { max-width: 1000px; }
   </style>
 </head>
 <body>
   <h1>Carers in Australia (ABS 2022) — % by Age &amp; Sex</h1>
-  <p>Contextual demand indicator to accompany the 2024 supply map. Click legend to focus on a sex. Bar lengths show % carers; left of 0 are males, right are females.</p>
+  <p>Click legend to focus on a sex. Values are % of persons who are carers. Left of 0 = males; right of 0 = females.</p>
 
   <div id="pyramid"></div>
 
   <script>
-    // Expects CSV columns: age_group, males_pct, females_pct
-    const pyr = {
+    const spec = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-      width: 880, height: 420,
-      data: { url: "data/proportioncare.csv" },
+      width: 900,
+      height: 440,
+      data: {
+        url: "data/proportioncare.csv",
+        // parse the percent columns as numbers
+        format: { type: "csv", parse: { "Males (%)": "number", "Females (%)": "number" } }
+      },
       transform: [
-        { fold: ["males_pct","females_pct"], as: ["sex","pct"] },
-        { calculate: "datum.sex=='males_pct' ? -datum.pct : datum.pct", as: "signed" },
-        { calculate: "datum.sex=='males_pct' ? 'Male' : 'Female'", as: "sex_label" }
+        // Drop the trailing "Source:" row (and any empty rows)
+        { filter: "datum['Age group'] && indexof(datum['Age group'], 'Source:') < 0" },
+
+        // Long format + signed axis (males to the left)
+        { fold: ["Males (%)", "Females (%)"], as: ["sex_raw", "pct"] },
+        { calculate: "datum.sex_raw === 'Males (%)' ? -datum.pct : datum.pct", as: "signed" },
+        { calculate: "datum.sex_raw === 'Males (%)' ? 'Male' : 'Female'", as: "Sex" }
       ],
-      params: [{ name:"sexSel", select:{type:"point", fields:["sex_label"]}, bind:"legend" }],
+
+      // Legend selection (filter)
+      params: [{ name: "sexSel", select: { type: "point", fields: ["Sex"] }, bind: "legend" }],
+
       layer: [
+        // Bars
         {
-          mark:{ type:"bar" },
-          encoding:{
-            y:{ field:"age_group", type:"ordinal", sort:null, title:"Age group" },
-            x:{ field:"signed", type:"quantitative",
-                axis:{ format: ".0f", title:"% of persons who are carers" } },
-            color:{ field:"sex_label", type:"nominal", title:"Sex" },
-            opacity:{ condition:{ param:"sexSel", value:1 }, value:0.35 },
-            tooltip:[
-              { field:"age_group", title:"Age" },
-              { field:"sex_label", title:"Sex" },
-              { field:"pct", title:"Carers (%)", format:".1f" }
+          mark: "bar",
+          encoding: {
+            y: { field: "Age group", type: "ordinal", sort: null, title: "Age group" },
+            x: {
+              field: "signed",
+              type: "quantitative",
+              axis: { title: "% of persons who are carers", format: ".0f" }
+            },
+            color: { field: "Sex", type: "nominal", title: "Sex" },
+            opacity: { condition: { param: "sexSel", value: 1 }, value: 0.35 },
+            tooltip: [
+              { field: "Age group", title: "Age" },
+              { field: "Sex" },
+              { field: "pct", title: "Carers (%)", format: ".1f" }
             ]
           }
         },
-        // Annotation: vertical reference line at 0
-        { mark:{ type:"rule", stroke:"#555" }, encoding:{ x:{ value:0 } } },
-        // Annotation: label the peak % across sexes
-        {
-          transform:[
-            { window:[{ op:"rank", as:"r"}], sort:[{ field:"pct", order:"descending"}] },
-            { filter:"datum.r==1" },
-            { calculate:"'Peak: '+datum.age_group+' ('+format(datum.pct,'.1f')+'%)'", as:"label" }
-          ],
-          mark:{ type:"text", dx:6, align:"left", fontWeight:"bold" },
-          encoding:{ y:{ field:"age_group" }, x:{ value:0 }, text:{ field:"label" } }
-        }
+
+        // Annotation: 0% vertical reference line
+        { mark: { type: "rule", stroke: "#555" }, encoding: { x: { value: 0 } } }
       ],
-      config:{ view:{ stroke:null } }
+
+      config: { view: { stroke: null } }
     };
 
-    vegaEmbed("#pyramid", pyr, { actions:true })
+    vegaEmbed("#pyramid", spec, { actions: true })
       .catch(err => console.error("Vega Embed Error:", err));
   </script>
 </body>
 </html>
+
+
