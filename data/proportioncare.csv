@@ -1,12 +1,13 @@
-"Proportion of all persons who provide informal care, by age and sex, 2022"
-,"Males (%)","Confidence interval (%) (low)","Confidence interval (%) (high)","Females (%)","Confidence interval (%) (low)","Confidence interval (%) (high)"
-"Less than 15","2.1","1.4","2.8","2.3","1.6","3.0"
-"15-24","8.9","7.5","10.3","9.5","7.9","11.1"
-"25-34","8.6","7.1","10.1","8.4","7.0","9.8"
-"35-44","11.5","10.2","12.8","15.8","14.2","17.4"
-"45-54","14.1","12.1","16.1","20.5","18.5","22.5"
-"55-64","16.0","13.7","18.3","19.5","17.9","21.1"
-"65-74","19.7","17.5","21.9","18.6","16.4","20.8"
-"75 and over","20.1","17.7","22.5","13.8","11.5","16.1"
+Age group,Males (%),CI Male low,CI Male high,Females (%),CI Female low,CI Female high
+Less than 15,2.1,1.4,2.8,2.3,1.6,3.0
+15–24,8.9,7.5,10.3,9.5,7.9,11.1
+25–34,8.6,7.1,10.1,8.4,7.0,9.8
+35–44,11.5,10.2,12.8,15.8,14.2,17.4
+45–54,14.1,12.1,16.1,20.5,18.5,22.5
+55–64,16.0,13.7,18.3,19.5,17.9,21.1
+65–74,19.7,17.5,21.9,18.6,16.4,20.8
+75 and over,20.1,17.7,22.5,13.8,11.5,16.1
 
 "Source: Australian Bureau of Statistics, Disability, Ageing and Carers, Australia: Summary of Findings 2022"
+
+
