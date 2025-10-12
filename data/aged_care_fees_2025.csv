@@ -1,0 +1,38 @@
+Category,Subcategory,Arrangement,Value,Unit
+Resident Fees,Basic Daily Fee,Post-2014,65.55,Dollars per day
+Resident Fees,Hotelling Contribution,All,22.15,Dollars per day
+Resident Fees,Non-clinical Care Contribution,All,105.30,Dollars per day
+Resident Fees,Means Tested Care Fee,Post-2014,403.80,Dollars per day
+Resident Fees,Income Tested Fee,Pre-2014,104.11,Dollars per day
+Resident Fees,Basic Daily Fee - Non-standard,Pre-2014,74.42,Dollars per day
+Resident Fees,Basic Daily Fee - Protected,Pre-2014,59.76,Dollars per day
+Resident Fees,TCP in Residential Care,Transition Care,65.55,Dollars per day
+Resident Fees,TCP in Community,Transition Care,13.49,Dollars per day
+Caps,Non-clinical Care Daily Cap,All,105.30,Dollars per day
+Caps,Non-clinical Care Lifetime Cap,All,135318.69,Dollars
+Caps,Means Tested Care Lifetime Cap,Post-2014,84571.66,Dollars
+Caps,Means Tested Care Annual Cap,Post-2014,35238.11,Dollars
+Caps,Home Exemption Cap,All,210555.20,Dollars
+Thresholds,Income Free Area - Single,Means Assessment,34762.00,Dollars
+Thresholds,Income Free Area - Couple Illness Separated,Means Assessment,34034.00,Dollars
+Thresholds,First Income Threshold - Single,Means Assessment,86406.32,Dollars
+Thresholds,First Income Threshold - Couple Illness Separated,Means Assessment,85678.32,Dollars
+Thresholds,Second Income Threshold,Means Assessment,101105.00,Dollars
+Thresholds,Third Income Threshold,Means Assessment,117230.20,Dollars
+Thresholds,Fourth Income Threshold - Single,Means Assessment,139048.00,Dollars
+Thresholds,Fourth Income Threshold - Couple Illness Separated,Means Assessment,136136.00,Dollars
+Thresholds,Asset Free Area,Means Assessment,63000.00,Dollars
+Thresholds,First Asset Threshold,Means Assessment,210555.20,Dollars
+Thresholds,Second Asset Threshold,Means Assessment,252000.00,Dollars
+Thresholds,Third Asset Threshold,Means Assessment,355366.66,Dollars
+Thresholds,Fourth Asset Threshold,Means Assessment,532055.20,Dollars
+Thresholds,Minimum Permissible Asset Level,Refundable Deposits,63000.00,Dollars
+Thresholds,Maximum Refundable Accommodation Deposit,Refundable Deposits,758627.00,Dollars
+Deeming Rates,Deeming Threshold - Single,All,64200.00,Dollars
+Deeming Rates,Deeming Threshold - Couple,All,106200.00,Dollars
+Deeming Rates,Lower Deeming Rate,All,0.75,Percent
+Deeming Rates,Higher Deeming Rate,All,2.75,Percent
+Interest Rates,Maximum Permissible Interest Rate,Oct-Dec 2025,7.61,Percent
+Interest Rates,Base Interest Rate,Oct 2025 onward,2.75,Percent
+Interest Rates,Maximum Interest on Outstanding Charge,Sep 2025 onward,1.50,Percent
+Indexation,DAP Index Number,Sep 2025,1.0,Index

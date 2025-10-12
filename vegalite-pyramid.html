@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Carers in Australia (ABS 2022) — % by Age & Sex</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; }
+    h1 { text-align:center; color:#333; margin:30px 0 6px; }
+    #vis {
+      width:100%; max-width:1100px; margin:18px auto 48px;
+      background:#fff; border-radius:10px; padding:14px;
+      box-shadow:0 2px 6px rgba(0,0,0,.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Carers in Australia (ABS 2022) — % by Age & Sex</h1>
+  <div id="vis"></div>
+
+  <script>
+    const spec = {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 1000,
+      "height": 520,
+      "autosize": { "type": "pad", "contains": "padding" },
+      "padding": { "left": 160, "right": 40, "top": 20, "bottom": 30 },
+
+      "description": "Population pyramid showing % of people who are carers by age group and sex. Males are plotted to the left (negative) and females to the right (positive).",
+
+      "title": {
+        "text": "Carers in Australia (ABS 2022) — % by Age & Sex",
+        "subtitle": "Source: Australian Bureau of Statistics, 2022 Survey of Disability, Ageing and Carers",
+        "anchor": "middle",
+        "fontSize": 18,
+        "subtitleFontSize": 12,
+        "subtitleColor": "#555"
+      },
+
+      "data": {
+        "url": "data/proportioncare.csv",
+        "format": {
+          "type": "csv",
+          "parse": { "Males (%)": "number", "Females (%)": "number" }
+        }
+      },
+
+      "transform": [
+        { "filter": "datum['Age group'] && datum['Age group'] !== ''" },
+        { "fold": ["Males (%)", "Females (%)"], "as": ["sex_raw", "pct"] },
+        { "calculate": "datum.sex_raw === 'Males (%)' ? -datum.pct : datum.pct", "as": "signed" },
+        { "calculate": "datum.sex_raw === 'Males (%)' ? 'Male' : 'Female'", "as": "Sex" },
+        { "calculate": "abs(datum.pct)", "as": "pct_abs" }
+      ],
+
+      "layer": [
+        {
+          "mark": { "type": "bar", "cornerRadiusEnd": 2 },
+          "encoding": {
+            "y": {
+              "field": "Age group",
+              "type": "ordinal",
+              "sort": [
+                "Less than 15", "15–24", "25–34", "35–44",
+                "45–54", "55–64", "65–74", "75 and over"
+              ],
+              "title": "Age group",
+              "axis": { "labelAlign": "right", "labelPadding": 10, "labelLimit": 150, "titlePadding": 15 }
+            },
+            "x": {
+              "field": "signed",
+              "type": "quantitative",
+              "scale": { "domain": [-20, 20] },       /* generous, symmetric domain */
+              "axis": {
+                "title": "% of persons who are carers",
+                "labelExpr": "abs(datum.value) + '%'",
+                "tickCount": 10
+              }
+            },
+            "color": {
+              "field": "Sex",
+              "type": "nominal",
+              "title": "Sex",
+              "scale": { "domain": ["Male", "Female"], "range": ["#0072B2", "#D55E00"] }
+            },
+            "tooltip": [
+              { "field": "Age group", "title": "Age" },
+              { "field": "Sex" },
+              { "field": "pct_abs", "title": "Carers (%)", "format": ".1f" }
+            ]
+          }
+        },
+        {
+          "mark": { "type": "rule", "stroke": "#555", "strokeWidth": 2 },
+          "encoding": { "x": { "value": 0 } }
+        }
+      ],
+
+      "config": {
+        "view": { "stroke": null },
+        "axis": { "gridColor": "rgba(0,0,0,0.1)" },
+        "legend": {
+          "orient": "top",
+          "title": "Sex",
+          "labelFontSize": 12,
+          "symbolType": "square",
+          "symbolSize": 120
+        }
+      }
+    };
+
+    vegaEmbed('#vis', spec, { actions: true })
+      .then(() => console.log('Loaded'))
+      .catch(err => console.error(err));
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
