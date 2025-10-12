@@ -33,10 +33,9 @@
   </div>
 
   <div class="helper">
-    How to read: position on the x-axis is the daily rate; each dot is a fee type. Use the legend to highlight an arrangement.
+    How to read: position on the x-axis is the daily rate; each dot is a fee type. Use the legend to <b>filter</b> by arrangement.
   </div>
 
-  <!-- tiny glossary so users know what they’re looking at -->
   <div class="glossary" aria-label="Arrangements glossary">
     <span class="pill"><b>Post-2014</b> current fee regime after the 1 Jul 2014 reforms</span>
     <span class="pill"><b>Pre-2014</b> settings under the pre-reform regime</span>
@@ -63,46 +62,58 @@
     "height": 520,
     "background": null,
     "data": {"values": dataVals},
+
     "title": {
       "text": "Daily Fees (AUD/day) — Sorted by Value",
-      "subtitle": "Colour encodes arrangement • Hover for details • Most fees cluster between $20–$105/day",
+      "subtitle": "Use the legend to filter arrangements • Hover for details",
       "anchor": "middle",
       "fontSize": 16,
       "subtitleFontSize": 12,
       "subtitleColor": "#6b7280"
     },
-    "transform": [
-      {"window":[{"op":"rank","as":"rk"}], "sort":[{"field":"Value","order":"descending"}]}
-    ],
-    "layer": [
-      {
-        "selection": { "highlight": {"type":"multi","fields":["Arrangement"],"bind":"legend"} },
-        "mark": {"type":"point","filled":true,"size":150},
-        "encoding":{
-          "y":{
-            "field":"Subcategory","type":"ordinal",
-            "sort":{"field":"Value","order":"descending"},
-            "axis": null
-          },
-          "x":{
-            "field":"Value","type":"quantitative",
-            "title":"Daily rate (AUD)",
-            "axis":{"format":".0f","tickCount":10}
-          },
-          "color":{
-            "field":"Arrangement","type":"nominal","title":"Arrangement",
-            "scale":{"domain":["Post-2014","Pre-2014","Transition Care","All"],
-                     "range":["#0072B2","#D55E00","#1b9e77","#9ca3af"]}
-          },
-          "opacity":{"condition":{"selection":"highlight","value":1},"value":0.4},
-          "tooltip":[
-            {"field":"Subcategory","title":"Fee type"},
-            {"field":"Arrangement","title":"Arrangement"},
-            {"field":"Value","title":"Rate (AUD/day)","format":".2f"}
-          ]
-        }
+
+    /* TOP-LEVEL PARAM for legend filter */
+    "params": [
+      { "name": "pick",
+        "select": { "type": "point", "fields": ["Arrangement"] },
+        "bind": "legend",
+        "value": []   /* empty = show all; clicking filters */
       }
     ],
+
+    /* Apply the legend filter, then rank for sorting */
+    "transform": [
+      { "filter": { "param": "pick" } },
+      { "window": [{ "op": "rank", "as": "rk" }],
+        "sort": [{ "field": "Value", "order": "descending" }] }
+    ],
+
+    "mark": {"type":"point","filled":true,"size":150},
+
+    "encoding":{
+      "y":{
+        "field":"Subcategory","type":"ordinal",
+        "sort":{"field":"Value","order":"descending"},
+        "axis": null
+      },
+      "x":{
+        "field":"Value","type":"quantitative",
+        "title":"Daily rate (AUD)",
+        "axis":{"format":".0f","tickCount":10}
+      },
+      "color":{
+        "field":"Arrangement","type":"nominal","title":"Arrangement",
+        "scale":{"domain":["Post-2014","Pre-2014","Transition Care","All"],
+                 "range":["#0072B2","#D55E00","#1b9e77","#9ca3af"]}
+      },
+      /* No opacity condition needed—items are filtered, not dimmed */
+      "tooltip":[
+        {"field":"Subcategory","title":"Fee type"},
+        {"field":"Arrangement","title":"Arrangement"},
+        {"field":"Value","title":"Rate (AUD/day)","format":".2f"}
+      ]
+    },
+
     "config":{
       "view":{"stroke":null},
       "axis":{"grid":true,"gridColor":"rgba(0,0,0,0.06)","tickSize":4,
@@ -116,6 +127,7 @@
   </script>
 </body>
 </html>
+
 
 
 
