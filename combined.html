@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8" />
   <title>Residential Aged Care (2025) + Carers in Australia (ABS 2022)</title>
-  <!-- Lock versions for consistency -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.2"></script>
@@ -15,85 +14,50 @@
     html,body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
     .page-title{font-size:34px;font-weight:800;text-align:center;margin:28px 12px 6px}
     .lede{max-width:960px;margin:0 auto 18px;text-align:center;color:var(--muted);font-size:15px;line-height:1.45}
-    .story{
-  margin:10px 8px 0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.45;
-  max-width:860px; /* matches helper/glossary width */
-}
-
-
-    .grid{
-      max-width:1500px;            
-      margin:0 auto 28px;
-      padding:0 24px;              
-      display:grid; gap:18px; grid-template-columns:1fr;
-    }
+    .story{margin:10px 8px 0;color:var(--muted);font-size:13px;line-height:1.45;max-width:860px;}
+    .grid{max-width:1500px;margin:0 auto 28px;padding:0 24px;display:grid;gap:18px;grid-template-columns:1fr;}
     @media (min-width:1180px){ .grid{ grid-template-columns:1fr 1fr } }
-
     .card{background:var(--card);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);padding:16px}
     .panel-h1{margin:6px 8px 2px;font-size:18px;font-weight:700}
     .panel-sub{margin:0 8px 10px;color:var(--muted);font-size:13px}
-
     .viswrap{ display:flex; justify-content:center; width:100% }
     .vis{ width:100%; max-width:700px }
-
-    /* Helper + glossary styles */
-    .helper{
-      margin:10px 8px 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-    }
-    .glossary{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:8px 8px 2px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      background:#f3f4f6;
-      border:1px solid #e5e7eb;
-      border-radius:999px;
-      font-size:12px;
-      color:#374151;
-    }
+    .helper{margin:10px 8px 0;color:var(--muted);font-size:13px;line-height:1.35;}
+    .glossary{display:flex;flex-wrap:wrap;gap:8px;margin:8px 8px 2px;}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;font-size:12px;color:#374151;}
     .swatch{ width:10px; height:10px; border-radius:2px; display:inline-block; }
     .swatch.post2014{ background:var(--blue); }
     .swatch.pre2014{ background:var(--orange); }
     .swatch.transition{ background:var(--teal); }
     .swatch.all{ background:var(--gray); }
-
-    /* Optional: keep text widths tidy under charts */
     .card .panel-sub, .card .helper, .card .glossary { max-width:860px }
+
+    #map-section {max-width:900px; margin:20px auto;}
+    nav {text-align:center; margin-top:12px;}
+    nav a {color:var(--blue); text-decoration:none; margin:0 6px;}
   </style>
 </head>
 <body>
+  <nav>
+    <a href="./combined.html">Combined view</a> ·
+    <a href="./agedcare-fees.html">Fees</a> ·
+    <a href="./vegalite-pyramid.html">Pyramid</a>
+  </nav>
+
+  <div id="map-section">
+    <h2 style="text-align:center;">Residential Aged Care — Share of National Places by State (2024)</h2>
+    <div id="visMap"></div>
+  </div>
+
   <div class="page-title">Residential Aged Care (2025) & Carers in Australia (2022)</div>
   <p class="lede">Two focused visuals. Left: Daily Residential aged-care fees (filter by arrangement). Right: Carers by age & sex (population pyramid). Hover either chart for details.</p>
 
   <div class="grid">
-    <!-- Chart A: Residential Aged Care — Daily Fees -->
     <div class="card">
       <div class="panel-h1"> Residential Aged Care (2025) — Daily Fees by Arrangement</div>
-      <p class="panel-sub">
-        Most resident fees sit between <b>$20–$105/day</b>, with a single high point at the
-        <b>Means Tested Care Fee (~$404/day)</b>. Colour shows which policy arrangement each fee belongs to.
-        Hover dots for exact values.
-      </p>
-
+      <p class="panel-sub">Most resident fees sit between <b>$20–$105/day</b>, with a single high point at the <b>Means Tested Care Fee (~$404/day)</b>. Colour shows which policy arrangement each fee belongs to. Hover dots for exact values.</p>
       <div class="viswrap"><div id="visA" class="vis"></div></div>
-
-      <div class="helper" role="note">
-        How to read: position on the x-axis is the daily rate; each dot is a fee type.
-        Use the legend to <b>filter</b> by arrangement.
-      </div>
-
+      <div class="helper" role="note">How to read: position on the x-axis is the daily rate; each dot is a fee type. Use the legend to <b>filter</b> by arrangement.</div>
       <div class="glossary" aria-label="Arrangements glossary">
         <span class="pill"><span class="swatch post2014"></span><b>Post-2014</b> current fee regime after the 1 Jul 2014 reforms</span>
         <span class="pill"><span class="swatch pre2014"></span><b>Pre-2014</b> settings under the pre-reform regime</span>
@@ -102,7 +66,6 @@
       </div>
     </div>
 
-    <!-- Chart B: Carers in Australia — % by Age & Sex (pyramid) -->
     <div class="card">
       <div class="panel-h1"> Carers in Australia (ABS 2022) — % by Age & Sex</div>
       <div class="panel-sub">"Source: Australian Bureau of Statistics, 2022 Survey of Disability, Ageing and Carers" %</div>
@@ -117,17 +80,69 @@
   </div>
 
   <script>
-  /* --------------------- Chart A: Aged care fees --------------------- */
+  const specMap = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 860,
+    "height": 560,
+    "projection": { "type": "mercator", "center": [134, -28], "scale": 800 },
+    "layer": [
+      {
+        "data": {
+          "url": "geo/au_states.topojson",
+          "format": { "type": "topojson", "feature": "STE_2021_AUST_GDA2020" }
+        },
+        "transform": [
+          {
+            "lookup": "properties.STE_NAME21",
+            "from": {
+              "data": { "url": "data/state_totals.csv" },
+              "key": "state",
+              "fields": ["total_places"]
+            }
+          },
+          {
+            "joinaggregate": [
+              { "op": "sum", "field": "total_places", "as": "national_total_places" }
+            ]
+          },
+          {
+            "calculate": "datum.total_places && datum.national_total_places > 0 ? (100 * datum.total_places / datum.national_total_places) : 0",
+            "as": "share_pct"
+          }
+        ],
+        "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 0.5 },
+        "encoding": {
+          "color": {
+            "field": "share_pct",
+            "type": "quantitative",
+            "title": "% of national places",
+            "scale": { "scheme": "blues", "domain": [0, 50] }
+          },
+          "tooltip": [
+            { "field": "properties.STE_NAME21", "title": "State / Territory" },
+            { "field": "total_places", "title": "Total places", "format": "," },
+            { "field": "share_pct", "title": "Share of national (%)", "format": ".3f" }
+          ]
+        }
+      },
+      {
+        "data": { "url": "geo/ne_10m_graticules_30.geojson" },
+        "mark": { "type": "geoshape", "stroke": "#999", "strokeWidth": 0.5, "fill": "none" }
+      }
+    ],
+    "config": { "view": { "stroke": null } }
+  };
+
   const feesData = [
-    {Subcategory:"Basic Daily Fee",                    Arrangement:"Post-2014",       Value:65.55},
-    {Subcategory:"Hotelling Contribution",             Arrangement:"All",             Value:22.15},
-    {Subcategory:"Non-clinical Care Contribution",     Arrangement:"All",             Value:105.30},
-    {Subcategory:"Means Tested Care Fee",              Arrangement:"Post-2014",       Value:403.80},
-    {Subcategory:"Income Tested Fee",                  Arrangement:"Pre-2014",        Value:104.11},
-    {Subcategory:"Basic Daily Fee - Non-standard",     Arrangement:"Pre-2014",        Value:74.42},
-    {Subcategory:"Basic Daily Fee - Protected",        Arrangement:"Pre-2014",        Value:59.76},
-    {Subcategory:"TCP in Residential Care",            Arrangement:"Transition Care", Value:65.55},
-    {Subcategory:"TCP in Community",                   Arrangement:"Transition Care", Value:13.49}
+    {Subcategory:"Basic Daily Fee", Arrangement:"Post-2014", Value:65.55},
+    {Subcategory:"Hotelling Contribution", Arrangement:"All", Value:22.15},
+    {Subcategory:"Non-clinical Care Contribution", Arrangement:"All", Value:105.30},
+    {Subcategory:"Means Tested Care Fee", Arrangement:"Post-2014", Value:403.80},
+    {Subcategory:"Income Tested Fee", Arrangement:"Pre-2014", Value:104.11},
+    {Subcategory:"Basic Daily Fee - Non-standard", Arrangement:"Pre-2014", Value:74.42},
+    {Subcategory:"Basic Daily Fee - Protected", Arrangement:"Pre-2014", Value:59.76},
+    {Subcategory:"TCP in Residential Care", Arrangement:"Transition Care", Value:65.55},
+    {Subcategory:"TCP in Community", Arrangement:"Transition Care", Value:13.49}
   ];
 
   const specA = {
@@ -137,71 +152,37 @@
     "background": null,
     "padding": {"left":20,"right":20,"top":10,"bottom":10},
     "data": {"values": feesData},
-    "title": null,
-
     "params": [
-      { "name": "pick",
-        "select": { "type": "point", "fields": ["Arrangement"] },
-        "bind": "legend",
-        "value": []
-      }
+      { "name": "pick", "select": { "type": "point", "fields": ["Arrangement"] }, "bind": "legend", "value": [] }
     ],
-
     "transform": [
       { "filter": { "param": "pick" } },
-      { "window": [{ "op": "rank", "as": "rk" }],
-        "sort": [{ "field": "Value", "order": "descending" }] }
+      { "window": [{ "op": "rank", "as": "rk" }], "sort": [{ "field": "Value", "order": "descending" }] }
     ],
-
     "mark": {"type":"point","filled":true,"size":150},
     "encoding":{
-      "y":{
-        "field":"Subcategory","type":"ordinal",
-        "sort":{"field":"Value","order":"descending"},
-        "axis": null
-      },
-      "x":{
-        "field":"Value","type":"quantitative",
-        "title":"Daily rate (AUD)",
-        "axis":{"format":".0f","tickCount":10},
-        "scale":{"domain":[0,420]}
-      },
-      "color":{
-        "field":"Arrangement","type":"nominal","title":"Arrangement",
-        "scale":{"domain":["Post-2014","Pre-2014","Transition Care","All"],
-                 "range":["#0072B2","#D55E00","#1b9e77","#9ca3af"]}
-      },
-      "tooltip":[
-        {"field":"Subcategory","title":"Fee type"},
-        {"field":"Arrangement","title":"Arrangement"},
-        {"field":"Value","title":"Rate (AUD/day)","format":".2f"}
-      ]
+      "y":{"field":"Subcategory","type":"ordinal","sort":{"field":"Value","order":"descending"},"axis": null},
+      "x":{"field":"Value","type":"quantitative","title":"Daily rate (AUD)","axis":{"format":".0f","tickCount":10},"scale":{"domain":[0,420]}},
+      "color":{"field":"Arrangement","type":"nominal","title":"Arrangement","scale":{"domain":["Post-2014","Pre-2014","Transition Care","All"],"range":["#0072B2","#D55E00","#1b9e77","#9ca3af"]}},
+      "tooltip":[{"field":"Subcategory","title":"Fee type"},{"field":"Arrangement","title":"Arrangement"},{"field":"Value","title":"Rate (AUD/day)","format":".2f"}]
     },
     "config":{
       "view":{"stroke":null},
-      "axis":{"grid":true,"gridColor":"rgba(0,0,0,0.06)","tickSize":4,
-              "labelLimit":220,"titleFontSize":12,"labelFontSize":12},
-      "legend":{"orient":"top-left","direction":"horizontal","symbolType":"square","symbolSize":120,
-                "labelFontSize":12,"title":"Arrangement"}
+      "axis":{"grid":true,"gridColor":"rgba(0,0,0,0.06)","tickSize":4,"labelLimit":220,"titleFontSize":12,"labelFontSize":12},
+      "legend":{"orient":"top-left","direction":"horizontal","symbolType":"square","symbolSize":120,"labelFontSize":12,"title":"Arrangement"}
     }
   };
 
-  /* --------------------- Chart B: Carers pyramid --------------------- */
   const specB = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": "container",
     "height": 500,
     "autosize": { "type": "pad", "contains": "padding" },
     "padding":{"left":20,"right":20,"top":10,"bottom":10},
-
     "data": {
       "url": "data/proportioncare.csv",
-      "format": {
-        "type": "csv",
-        "parse": { "Males (%)": "number", "Females (%)": "number" }
-      }
+      "format": { "type": "csv", "parse": { "Males (%)": "number", "Females (%)": "number" } }
     },
-
     "transform": [
       { "filter": "datum['Age group'] && datum['Age group'] !== ''" },
       { "fold": ["Males (%)", "Females (%)"], "as": ["sex_raw", "pct"] },
@@ -209,7 +190,6 @@
       { "calculate": "datum.sex_raw === 'Males (%)' ? 'Male' : 'Female'", "as": "Sex" },
       { "calculate": "abs(datum.pct)", "as": "pct_abs" }
     ],
-
     "layer": [
       {
         "mark": { "type": "bar", "cornerRadiusEnd": 2 },
@@ -217,10 +197,7 @@
           "y": {
             "field": "Age group",
             "type": "ordinal",
-            "sort": [
-              "Less than 15","15–24","25–34","35–44",
-              "45–54","55–64","65–74","75 and over"
-            ],
+            "sort": ["Less than 15","15–24","25–34","35–44","45–54","55–64","65–74","75 and over"],
             "title": "Age group",
             "axis": { "labelAlign": "right", "labelPadding": 10, "labelLimit": 150, "titlePadding": 15 }
           },
@@ -228,11 +205,7 @@
             "field": "signed",
             "type": "quantitative",
             "scale": { "domain": [-20, 20] },
-            "axis": {
-              "title": "% of persons who are carers",
-              "labelExpr": "abs(datum.value) + '%'",
-              "tickCount": 10
-            }
+            "axis": { "title": "% of persons who are carers", "labelExpr": "abs(datum.value) + '%'", "tickCount": 10 }
           },
           "color": {
             "field": "Sex",
@@ -252,26 +225,22 @@
         "encoding": { "x": { "value": 0 } }
       }
     ],
-
     "config": {
       "view": { "stroke": null },
       "axis": { "gridColor": "rgba(0,0,0,0.1)" },
-      "legend": {
-        "orient": "top",
-        "title": "Sex",
-        "labelFontSize": 12,
-        "symbolType": "square",
-        "symbolSize": 120
-      }
+      "legend": { "orient": "top", "title": "Sex", "labelFontSize": 12, "symbolType": "square", "symbolSize": 120 }
     }
   };
 
-  // Render both charts
-  vegaEmbed("#visA", specA, {actions:false}).catch(console.error);
-  vegaEmbed("#visB", specB, {actions:false}).catch(console.error);
+  vegaEmbed("#visMap", specMap, { actions:false }).catch(console.error);
+  vegaEmbed("#visA", specA, { actions:false }).catch(console.error);
+  vegaEmbed("#visB", specB, { actions:false }).catch(console.error);
   </script>
 </body>
 </html>
+
+
+
 
 
 

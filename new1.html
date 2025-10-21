@@ -18,9 +18,9 @@
     --radius:18px; --radius-sm:12px; --max:1200px;
     --blue:#0072B2; --orange:#D55E00; --teal:#1b9e77; --gray:#9ca3af;
   }
-  html,body{margin:0;background:var(--bg);color:#0f172a;
+  html,body{margin:0;background:var(--bg);color:var(--ink);
             font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  a{color:#0b6ad9;text-decoration:none} a:hover{text-decoration:underline}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
 
   /* Banner */
   .banner{background:linear-gradient(180deg,#163b75,#0e2a52);color:#fff;padding:26px 0 18px;box-shadow:var(--shadow)}
@@ -54,10 +54,6 @@
   .bullet{margin:.35rem 0 0 0;padding-left:18px}
   .bullet li{margin:.35rem 0}
 
-  /* Tiny source footnotes */
-  .source { margin:8px 6px 0; font-size:.8rem; line-height:1.4; color:#6b7280; }
-  .source a { color:#6b7280; text-decoration:underline; text-underline-offset:2px; }
-
   /* Helper & legend pills (fees) */
   .helper{color:#607086;font-size:.92rem;margin:6px 6px 2px}
   .legend-pills{display:flex;flex-wrap:wrap;gap:8px;margin:8px 6px 2px}
@@ -71,40 +67,39 @@
 
   /* Footer */
   .footer{color:#8a96a7;font-size:.9rem;text-align:center;margin:28px 0}
+
+  /* Tiny source footnotes under charts */
+.source {
+  margin: 8px 6px 0;
+  font-size: .8rem;
+  line-height: 1.4;
+  color: #6b7280;   /* muted */
+}
+.source a { color: #6b7280; text-decoration: underline; text-underline-offset: 2px; }
+
 </style>
-<style>
-    /* Make each pill its own row and wrap text nicely */
-    .legend-pills { flex-direction: column; align-items: stretch; }
-    .legend-pills .pill { 
-      max-width: 100%; 
-      white-space: normal; 
-      line-height: 1.4; 
-      align-items: flex-start;
-    }
-    .legend-pills .pill b { white-space: nowrap; } /* keep the label on one line */
-  </style>
 </head>
 <body>
   <div class="banner"><div class="track">Health & Social Care • Visual Story</div></div>
 
   <main class="wrap">
-    <h1>Mapping Residential Aged Care in Australia: Places, Prices, and People</h1>
+    <h1>Aged Care in Australia — A Map-Led, Story-First Dashboard</h1>
     <p class="subtitle">
-      Complementary views tell one story: where places are concentrated, what people pay,
+      Five complementary views tell one story: where places are concentrated, what people pay,
       who steps up to care, how funding is mixed, and why carers take on the role.
     </p>
 
-    <!-- Hero image -->
+    <!-- Hero image (swap src to your local file if you like) -->
     <figure class="hero">
       <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1600&auto=format&fit=crop" alt="Elderly hands with a carer, warm light" />
       <figcaption>Care is local, personal, and time-intensive. This dashboard translates numbers into that human context.</figcaption>
     </figure>
 
-    <!-- ABSTRACT -->
+    <!-- ABSTRACT (longer; same tone as your example) -->
     <section class="abstract">
       <div class="label">ABSTRACT</div>
       <p>Australia’s aged-care system operates under highly variable social and geographic conditions, where population distribution, household finances, and unpaid care profoundly shape access to support. In recent years, rising demand and changing family structures have raised concerns about the sustainability and resilience of care arrangements, especially outside major population centres.</p>
-      <p>This dashboard integrates concise idioms to communicate the landscape at a glance: a choropleth showing each state/territory’s share of national residential places; a fee dot plot clarifying which costs are routine versus means-tested; a population pyramid revealing who actually provides care; a waffle chart explaining how funding is allocated; and a reason–relationship heatmap that surfaces why people become carers. A sixth, slider-driven rank visualisation shows how the pecking order of capacity remains stable yet subtly shifts year to year; a seventh, radial “care-hours rose” makes time commitment visible, highlighting that care is often a second job.</p>
+      <p>This dashboard integrates five concise idioms to communicate the landscape at a glance: a choropleth showing each state/territory’s share of national residential places; a fee dot plot clarifying which costs are routine versus means-tested; a population pyramid revealing who actually provides care; a waffle chart explaining how funding is allocated; and a reason–relationship heatmap that surfaces why people become carers. A sixth, slider-driven rank visualisation shows how the pecking order of capacity remains stable yet subtly shifts year to year; a seventh, radial “care-hours rose” makes time commitment visible, highlighting that care is often a second job.</p>
     </section>
 
     <!-- A. MAP -->
@@ -123,14 +118,10 @@
           <li><b>Caveats:</b> State totals don’t show <i>within-state</i> spread or acuity (e.g., dementia-specific beds).</li>
         </ul>
       </div>      
-      <div class="source">
-        <b>Source:</b> AIHW – Providers, services and places in aged care (Data access).
-        <a href="https://www.gen-agedcaredata.gov.au/resources/access-data/2025/april/gen-data-providers%2C-services-and-places-in-aged-care" target="_blank" rel="noopener">Open</a>
-      </div>
     </section>
 
-    <!-- B. FEES DOT PLOT -->
-    <section class="section card">
+     <!-- B. FEES DOT PLOT -->
+     <section class="section card">
         <div class="title">B. Daily Resident Fees (AUD/day) — Decode the Arrangements</div>
         <div class="sub">
           Hover points for exact values. Use the legend to <b>filter</b> by arrangement.
@@ -183,30 +174,25 @@
           <a href="https://www.health.gov.au/sites/default/files/2025-10/schedule-of-fees-and-charges-for-residential-and-home-care.pdf" target="_blank" rel="noopener">Open PDF</a>
         </div>
       </section>
-      
 
-     <!-- C. PYRAMID -->
-     <section class="section card">
-        <div class="title">C. Carers in Australia (ABS 2022) — % by Age & Sex</div>
-        <div class="sub">Diverging bars; males left, females right.</div>
-        <div id="visPyr" class="viz"></div>
-        <div class="story">
-          <h4>The engine room of care</h4>
-          <ul class="bullet">
-            <li><b>What it shows:</b> % of Australians who are carers by age band, split by sex (males left, females right).</li>
-            <li><b>Peak years:</b> Participation swells across <b>35–64</b> — the career-and-kids crunch.</li>
-            <li><b>Gender gap:</b> <b>Women lead</b> throughout mid-life, reflecting persistent unpaid-care patterns.</li>
-            <li><b>Later life:</b> At <b>65+</b> the gap narrows as partners increasingly care for each other.</li>
-            <li><b>How to read:</b> Bar length = share of carers in that age group; compare left vs right for the sex split.</li>
-            <li><b>Why it matters:</b> Time-respecting supports — <i>respite, flexible work, navigation help</i> — deliver the biggest
-                “return on relief” when aimed at mid-life households, especially women.</li>
-          </ul>
-        </div>
-        <div class="source">
-            <b>Source:</b> ABS – Disability, Ageing and Carers, Australia (SDAC 2022) – Summary findings.
-            <a href="https://www.abs.gov.au/statistics/health/disability/disability-ageing-and-carers-australia-summary-findings/latest-release" target="_blank" rel="noopener">Open</a>
-          </div>
-      </section>
+    <!-- C. PYRAMID -->
+    <section class="section card">
+      <div class="title">C. Carers in Australia (ABS 2022) — % by Age & Sex</div>
+      <div class="sub">Diverging bars; males left, females right.</div>
+      <div id="visPyr" class="viz"></div>
+      <div class="story">
+        <h4>The engine room of care</h4>
+        <ul class="bullet">
+          <li><b>What it shows:</b> % of Australians who are carers by age band, split by sex (males left, females right).</li>
+          <li><b>Peak years:</b> Participation swells across <b>35–64</b> — the career-and-kids crunch.</li>
+          <li><b>Gender gap:</b> <b>Women lead</b> throughout mid-life, reflecting persistent unpaid-care patterns.</li>
+          <li><b>Later life:</b> At <b>65+</b> the gap narrows as partners increasingly care for each other.</li>
+          <li><b>How to read:</b> Bar length = share of carers in that age group; compare left vs right for the sex split.</li>
+          <li><b>Why it matters:</b> Time-respecting supports — <i>respite, flexible work, navigation help</i> — deliver the biggest
+              “return on relief” when aimed at mid-life households, especially women.</li>
+        </ul>
+      </div>
+    </section>
 
     <!-- D. WAFFLE -->
     <section class="section card">
@@ -232,16 +218,13 @@
           <li><b>Caveat:</b> Mix reflects policy settings for 2023–24; proportions shift with reforms and demand.</li>
         </ul>
       </div>
-      <div class="source">
-        <b>Source:</b> AIHW – Spending on aged care (2023–24).
-        <a href="https://www.gen-agedcaredata.gov.au/topics/spending-on-aged-care" target="_blank" rel="noopener">Open</a>
-      </div>
+      
     </section>
 
     <!-- E. HEATMAP -->
     <section class="section card">
-      <div class="title">E. Why People Become Carers — <i>Primary carers of people with dementia (SDAC 2022)</i></div>
-      <div class="sub">Share (%) of primary carers selecting each reason, by relationship</div>
+      <div class="title">E. Why People Become Carers (by Relationship)</div>
+      <div class="sub">Heatmap of reason × relationship (% selecting).</div>
       <div id="visReasons" class="viz"></div>
       <div class="story">
         <h4>Motivation in one glance</h4>
@@ -259,10 +242,6 @@
           <li><b>Why it matters:</b> When “<b>no other arrangements</b>” lights up, the issue isn’t willingness — it’s supply. 
               <i>Navigation help</i> and <i>respite</i> are hinges that prevent burnout.</li>
         </ul>
-      </div>
-      <div class="source" aria-label="Data source for heatmap">
-        <b>Source:</b> ABS SDAC 2022 (primary carers of people with dementia); AIHW, <i>Dementia in Australia</i> — Carers findings.
-        <a href="https://www.aihw.gov.au/getmedia/da22f950-87f6-4a1e-9e85-b061dfa26359/dementia-in-australia-march-2024.pdf" target="_blank" rel="noopener">Open</a>
       </div>
     </section>
 
@@ -296,36 +275,26 @@
       <a href="https://www.gen-agedcaredata.gov.au/resources/access-data/2025/april/gen-data-providers%2C-services-and-places-in-aged-care" target="_blank" rel="noopener">Open</a>
     </div>
   </section>
-  
 
     <!-- G. UNIQUE IDIOM: Radial “Care-Hours Rose” -->
     <section class="section card">
-      <div class="title">G. “Care-Hours Donut” — Weekly Hours Distribution</div>
-      <div class="sub">A circular share chart showing how carer time is distributed by hours/week.</div>
+      <div class="title">G. “Care-Hours Rose” — Weekly Hours Distribution</div>
+      <div class="sub">A circular share chart (arc segments) showing how carer time is distributed by hours/week.</div>
       <div id="visRose" class="viz"></div>
       <div class="story">
-        <h4>How much time care really takes</h4>
-        <ul class="bullet">
-          <li><b>What it shows:</b> Share of carers by <b>weekly hours</b> of unpaid care, displayed as a circular “rose”.</li>
-          <li><b>How to read:</b> Each arc = an hours band; <i>wider arc = more carers</i>. Hover for exact %.</li>
-          <li><b>Standouts:</b> The <b>5–19 hrs/week</b> bands dominate (a “second job”). A meaningful minority provide <b>35+ hrs/week</b>—full-time care layered on life.</li>
-          <li><b>Why it matters:</b> Time intensity predicts <b>burnout risk</b>. Target respite and flexible support first at high-hour carers; streamline navigation for mid-hour carers.</li>
-          <li><b>Caveats:</b> Hours don’t capture <i>care complexity</i> or <i>overnight/on-call load</i>; pair with need/condition data for planning.</li>
-        </ul>
-      </div>
-      <div class="source">
-        <b>Source:</b> ABS – SDAC 2022 (Carer hours per week distribution).
-        <a href="https://www.aihw.gov.au/getmedia/da22f950-87f6-4a1e-9e85-b061dfa26359/dementia-in-australia-march-2024.pdf" target="_blank" rel="noopener">Open</a>
+        <h4>Time tells the weight</h4>
+        <p>Most carers sit in the <b>5–19 hours/week</b> ring — an invisible second job. A meaningful minority shoulder <b>35+ hours</b>: that’s full-time care layered on life. The rose makes the weight visible without shouting, and reminds us why respite and predictable schedules cut deepest.</p>
       </div>
     </section>
 
     <p class="footer">
-      Sources: ABS SDAC 2022; AIHW GEN; Department of Health &amp; Aged Care schedules. Map uses <code>geo/au_states.topojson</code> joined to <code>data/state_totals.csv</code>. Pyramid reads <code>data/proportioncare.csv</code>.
+      Sources: ABS SDAC 2022 (carers & reasons); AIHW GEN 2023–24 (spending). Fee components are standard examples for demonstration.<br/>
+      Map uses <code>geo/au_states.topojson</code> (feature <code>STE_2021_AUST_GDA2020</code>) joined to <code>data/state_totals.csv</code>. Pyramid reads <code>data/proportioncare.csv</code>.
     </p>
   </main>
 
 <script>
-/* =================== A. MAP =================== */
+/* =================== A. MAP (your files) =================== */
 const specMap = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container", "height": 520,
@@ -358,7 +327,7 @@ const specMap = {
   "config": { "view": { "stroke": null } }
 };
 
-/* =================== B. FEES (previous working) =================== */
+/* =================== B. FEES (inline) =================== */
 const feesData = [
   {Subcategory:"Basic Daily Fee",                Arrangement:"Post-2014",       Value:65.55},
   {Subcategory:"Hotelling Contribution",         Arrangement:"All",             Value:22.15},
@@ -389,7 +358,7 @@ const specFees = {
   "config":{"view":{"stroke":null}}
 };
 
-/* =================== C. PYRAMID =================== */
+/* =================== C. PYRAMID (from your CSV) =================== */
 const specPyr = {
   "$schema":"https://vega.github.io/schema/vega-lite/v5.json",
   "width":"container","height":460,
@@ -418,7 +387,7 @@ const specPyr = {
   "config":{"view":{"stroke":null}}
 };
 
-/* =================== D. WAFFLE =================== */
+/* =================== D. WAFFLE (inline) =================== */
 const spend = [
   {"Category":"Residential care","Share":59.0},
   {"Category":"Home care & support","Share":32.0},
@@ -441,7 +410,7 @@ const specWaffle = {
   "config":{"view":{"stroke":null}}
 };
 
-/* =================== E. REASONS HEATMAP =================== */
+/* =================== E. REASONS HEATMAP (inline) =================== */
 const reasons = [
   {"Reason":"Could provide better care","Partner":50.0,"Child":46.8,"Parent":45.7},
   {"Reason":"Family responsibility","Partner":59.3,"Child":81.9,"Parent":62.9},
@@ -528,7 +497,7 @@ const bumpSpec = {
   tick();
 })();
 
-/* =================== G. Rose =================== */
+/* =================== G. Radial “Care-Hours Rose” (inline) =================== */
 const hours = [
   {Bucket:"<5", Share:10},
   {Bucket:"5–9", Share:18},
